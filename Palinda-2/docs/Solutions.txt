@@ -1,0 +1,24 @@
+#Task1
+    # Bug01
+    Gets stuck on the channel send operation and waits forever for someone to read it. I avoid this by putting it in a Go routine.
+
+    # Bug02
+    The go routine sometimes exits before it gets a chance to print. 
+    
+#Task2
+  # What happens if you switch the order of the statements wgp.Wait() and close(ch) in the end of the main function?
+    panic: send on closed channel
+    The program is sending to a closed channel and therfore will panic.
+    
+  # What happens if you move the close(ch) from the main function and instead close the channel in the end of the function Produce?
+    panic: send on closed channel
+    Panics as it sends to a closed channel.
+  
+  # What happens if you remove the statement close(ch) completely?
+    Nothing changes, but the reciver will not know that it won't recieve anymore messages. It's only necessary to close a channel if a reciever looks for a close.
+    
+  # What happens if you increase the number of consumers from 2 to 4?
+    The program runs faster as the senders and recievers are weighted better. Not as big of a need for synchronization.
+    
+  # Can you be sure that all strings are printed before the program stops?
+    Yes, since you can still send on a channel which is not buffering if there's a receiver which is ready to recieve.
