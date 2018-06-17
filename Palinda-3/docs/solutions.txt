@@ -1,0 +1,40 @@
+#Task 1 - Matching Behaviour
+  - What happens if you remove the go-command from the Seek call in the main function?
+    The program will not initiate an independent concurrent go routine and therefore, and as len(people) is odd the last person ('Eva')
+    will have no one to send her message to.
+    
+  - What happens if you switch the declaration wg := new(sync.WaitGroup) to var wg sync.WaitGroup
+    and the parameter wg *sync.WaitGroup to wg sync.WaitGroup?
+    Results in a deadlock as wg is being sent as a value (and not as a pointer). "wg.Done()" in the function Seek will only change    locally. Wg.Wait() will in Main will wait forever.
+    
+  - What happens if you remove the buffer on the channel match?
+    As people is uneven a message will be sent and not recieved. The seek function will wait for a message that will not be recieved and therefore a deadlock occurs. If people would have been even this problem would not occur and all messages would have been recieved.
+    
+  - What happens if you remove the default-case from the case-statement in the main function?
+    The default case is needed for when the list people is uneven. If people is uneven and there is no default case a deadlock will occur. The default case is neccesary to finish the program if there are no more messages left.
+    
+    
+//-eftersom det är ett udda antal personer som skickar, kommer ett meddelande skickas som ej kommer att mottas. Det innebär
+//-att en seek-rutin kommer att blocka tills någon tar emot meddelandet, och Main kommer ej förbi wg.Wait().
+    
+#Task 2 - Fractal Images
+  - Inital time:
+    Old splits: 422.825688ms
+    Old splits: 67.9209ms
+    Old splits: 111.064295ms
+    Old splits: 65.335392ms
+    Old splits: 105.684411ms
+    Old splits: 979.092602ms
+    Old splits: 5.335718192s
+    Old splits: 14.981100987s
+    Total time: 22.698428427s
+  - New time:
+    New splits: 371.110682ms
+    New splits: 52.255974ms
+    New splits: 79.604864ms
+    New splits: 54.992267ms
+    New splits: 98.375639ms
+    New splits: 810.97612ms
+    New splits: 5.326662391s
+    New splits: 13.193728002s
+    Total time: 20.604362624s
